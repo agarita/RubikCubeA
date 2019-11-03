@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Threading;
 
 public class SceneManager : MonoBehaviour {
     public RubiksCubePrefab RCP;
+    public RubiksCube RCP_target;
     public Text txtTurnRecord;
     public Text txtNumMoves;
     public Slider SpeedSlider;
@@ -16,6 +18,7 @@ public class SceneManager : MonoBehaviour {
 
     void Start()
     {
+        RCP_target = RCP.RC.cloneCube();
         txtTurnRecord = txtTurnRecord.GetComponent<Text>();
         SpeedSlider = SpeedSlider.GetComponent<Slider>();
         txtAnimationSpeed = txtAnimationSpeed.GetComponent<Text>();
@@ -47,22 +50,47 @@ public class SceneManager : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
-            RCP.RC.printAllFaces();
-            ScrambleCube();
-            Debug.Log("------------------");
-            RCP.RC.printAllFaces();
+            //if(RCP.RC.isSolved())
+            //{
+            //    Debug.Log("isSolved");
+            //}
 
-            string solution = "LUDFBBiFi";
-            RubiksCube solCube = new RubiksCube();
-            solCube.RunCustomSequence(solution);
-            coroutine = RCP.animateCustomSequence(solution);
-            StartCoroutine(coroutine);
+            ////RCP.RC.printAllFaces();
+            //ScrambleCube();
 
-            //To set the UI label with the solution.
-            txtTurnRecord.text = solution;
+            //if (RCP.RC.isSolved())
+            //{
+            //    Debug.Log("isSolved");
+            //}
 
-            //To know the total number of moves and update the UI label
-            txtNumMoves.text = solCube.TurnRecordTokenCount() + " Moves";
+            //Debug.Log("------------------");
+            //RCP.RC.printAllFaces();
+
+            //string solution = "LUDFBBiFi";
+            //RubiksCube solCube = new RubiksCube();
+            //solCube.RunCustomSequence(solution);
+            //coroutine = RCP.animateCustomSequence(solution);
+            //StartCoroutine(coroutine);
+
+            ////To set the UI label with the solution.
+            //txtTurnRecord.text = solution;
+
+            ////To know the total number of moves and update the UI label
+            //txtNumMoves.text = solCube.TurnRecordTokenCount() + " Moves";
+            Solutionn s = new Solutionn(RCP_target, RCP.RC.cloneCube());
+            s.setVerbose(true);
+
+            
+            ThreadStart delegado = new ThreadStart(s.A);
+            
+            Thread hilo = new Thread(delegado);
+            hilo.Priority = System.Threading.ThreadPriority.Highest;
+
+
+            hilo.Start();
+
+            //s.A();
+            Debug.Log("test");
 
         }
     }
@@ -72,7 +100,7 @@ public class SceneManager : MonoBehaviour {
         if (coroutine != null)
             StopCoroutine(coroutine);
 
-        RCP.RC.Scramble(3);
+        RCP.RC.Scramble(2);
         RCP.RefreshPanels();
         txtTurnRecord.text = "";
         txtNumMoves.text = "";
