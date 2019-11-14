@@ -80,16 +80,18 @@ public class SceneManager : MonoBehaviour {
             Solutionn s = new Solutionn(RCP_target, RCP.RC.cloneCube());
             s.setVerbose(true);
 
-            
-            ThreadStart delegado = new ThreadStart(s.A);
-            
-            Thread hilo = new Thread(delegado);
-            hilo.Priority = System.Threading.ThreadPriority.Highest;
+
+            //ThreadStart delegado = new ThreadStart(s.A);
+
+            //Thread hilo = new Thread(delegado);
+            //hilo.Priority = System.Threading.ThreadPriority.Highest;
 
 
-            hilo.Start();
+            //hilo.Start();
 
-            //s.A();
+            string sol = s.A();
+            Debug.Log(sol);
+            RCP.RC.RunCustomSequence(sol);
             Debug.Log("test");
 
         }
@@ -115,6 +117,11 @@ public class SceneManager : MonoBehaviour {
         RCP.RefreshPanels();
         txtTurnRecord.text = "";
         txtNumMoves.text = "";
+    }
+
+    public void Solve()
+    {
+
     }
 
     public void setAnimationSpeed(float speed)

@@ -16,7 +16,7 @@ public class Node
 
     public void addNewMovement(string pMovement)
     {
-        this.sequenceMovements = this.sequenceMovements + pMovement;
+        this.sequenceMovements = pMovement + this.sequenceMovements;
     }
 
     public Node(string pSequenceMovements, int pF, int pG, int pH, Node pParent)
@@ -52,7 +52,6 @@ public class Solutionn
     {
         this.verbose = pValue;
     }
-
 
     public Solutionn(RubiksCube pTarget, RubiksCube pRC)
     {
@@ -110,7 +109,6 @@ public class Solutionn
         return walkableNodes;
     }
 
-
     public int ComputeHScore(Node pNode)
     {
         RubiksCube tRubikCube = RC.cloneCube();
@@ -128,41 +126,19 @@ public class Solutionn
         listColors.Add(Cube.GREENCOLOR);
         listColors.Add(Cube.BLUECOLOR);
 
-
-        for (int indexColors = 0; indexColors < listColors.Count(); indexColors++) {
-
-            if (cubeColors[indexColors][0][0] == listColors[indexColors])
+        for (int indexColors = 0; indexColors < listColors.Count(); indexColors++)
+        {
+            for(int i = 0; i < cubeColors[indexColors].Count(); i++)
             {
-                totalPoints++;
+                for(int j = 0; j < cubeColors[indexColors][i].Count(); j++)
+                {
+                    if (cubeColors[indexColors][i][j] == listColors[indexColors])
+                    {
+                        totalPoints += 10;
+                    }
+                }
+
             }
-
-            if (cubeColors[indexColors][0][2] == listColors[indexColors])
-            {
-                totalPoints++;
-            }
-
-            if (cubeColors[indexColors][2][0] == listColors[indexColors])
-            {
-                totalPoints++;
-            }
-
-            if (cubeColors[indexColors][2][2] == listColors[indexColors])
-            {
-                totalPoints++;
-            }
-
-            //for(int i = 0; i < cubeColors[indexColors].Count(); i++)
-            //{
-
-            //    for(int j = 0; j < cubeColors[indexColors][i].Count(); j++)
-            //    {
-            //        if (cubeColors[indexColors][i][j] == listColors[indexColors])
-            //        {
-            //            totalPoints++;
-            //        }
-            //    }
-
-            //}
         }
 
         //Debug.Log("total points: " + 2*totalPoints);
@@ -177,7 +153,7 @@ public class Solutionn
         return tRubikCube.isSolved();
     }
 
-    public void A()
+    public string A()
     {
 
         Node current = null;
@@ -235,14 +211,14 @@ public class Solutionn
 
         while (openList.Count > 0 && counter < limitAttemps )
         {
-                counter++;
+            counter++;
             // get the node with the lowest F score
             var lowest = openList.Min(l => l.F);
             current = openList.First(l => l.F == lowest);
 
 
 
-            // add the current square to the closed list
+            // add the current cube to the closed list
             closedList.Add(current);
 
             // remove it from the open list
@@ -260,7 +236,7 @@ public class Solutionn
             if (closedList.FirstOrDefault(l => isSolved(l)) != null)
             {
                 if (verbose) { Debug.Log("Solution found"); }
-                
+
                 break;
             }
 
@@ -277,7 +253,7 @@ public class Solutionn
                     //if(verbose) { Debug.Log("ignored it, since it is in the closedList"); }
                     continue;
                 }
-                    
+
 
                 // if it's not in the open list...
                 //if(verbose) { Debug.Log("Cheking if currentNode is in openList"); Debug.Log(openList.FirstOrDefault(l => l == adjacentNode)); }
@@ -299,7 +275,7 @@ public class Solutionn
                 }
                 else
                 {
-                    //if(verbose) { Debug.Log("else statement"); }
+                    // if(verbose) { Debug.Log("else statement"); }
                     // test if using the current G score makes the adjacent square's F score
                     // lower, if yes update the parent because it means it's a better path
                     if (g + adjacentNode.H < adjacentNode.F)
@@ -310,25 +286,26 @@ public class Solutionn
                     }
                 }
             }
-
-
-
         }
+        /*
+        for(int i = 0; i<closedList.Count;i++)
+        {
+            Debug.Log(closedList[i].sequenceMovements);
+        }
+        */
 
-        //for(int i = 0; i<closedList.Count;i++)
-        //{
-        //    Debug.Log(closedList[i].sequenceMovements);
-        //}
-
-        //Debug.Log("open list elements");
-
-
-        //for (int i = 0; i < openList.Count; i++)
-        //{
-        //    Debug.Log(openList[i].sequenceMovements);
-        //}
+        Debug.Log("open list elements");
 
 
+        Debug.Log(closedList[1].sequenceMovements);
+
+        return closedList[closedList.Count-1].sequenceMovements;
+
+        //RC.RunCustomSequence("B");//openList[openList.Count-1].sequenceMovements);
+
+        /*for (int i = 0; i < openList.Count; i++)
+        {
+            Debug.Log(openList[i].sequenceMovements);
+        }*/
     }
 }
-
