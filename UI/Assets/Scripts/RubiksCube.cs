@@ -99,7 +99,7 @@ public class RubiksCube
             case Cube.sides.TOP:
                 return getTopFaceColors();
             case Cube.sides.BOTTOM:
-                return getRightFaceColors();
+                return getBottomFaceColors();
             case Cube.sides.FRONT:
                 return getFrontFaceColors();
             default:
@@ -133,7 +133,7 @@ public class RubiksCube
                 Debug.Log(faceColors[i][j]);
             }
         }
-        
+
     }
 
     public List<List<List<Color>>> getAllFaces()

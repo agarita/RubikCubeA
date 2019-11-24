@@ -109,41 +109,176 @@ public class Solutionn
         return walkableNodes;
     }
 
-    public int ComputeHScore(Node pNode)
+    public bool piece1(List<List<List<Color>>> cube){
+      return cube[3][0][0] == Cube.WHITECOLOR &&
+             cube[0][0][0] == Cube.ORANGECOLOR &&
+             cube[5][0][2] == Cube.BLUECOLOR;
+    }
+
+    public bool piece2(List<List<List<Color>>> cube){
+      return cube[3][0][2] == Cube.WHITECOLOR &&
+             cube[1][0][2] == Cube.REDCOLOR &&
+             cube[5][0][0] == Cube.BLUECOLOR;
+    }
+
+    public bool piece3(List<List<List<Color>>> cube){
+      return cube[3][2][2] == Cube.WHITECOLOR &&
+             cube[1][0][0] == Cube.REDCOLOR &&
+             cube[4][0][2] == Cube.GREENCOLOR;
+    }
+
+    public bool piece4(List<List<List<Color>>> cube){
+      return cube[3][2][0] == Cube.WHITECOLOR &&
+             cube[0][0][2] == Cube.ORANGECOLOR &&
+             cube[4][0][0] == Cube.GREENCOLOR;
+    }
+
+    public bool piece5(List<List<List<Color>>> cube){
+      return cube[2][2][0] == Cube.YELLOWCOLOR &&
+             cube[0][2][0] == Cube.ORANGECOLOR &&
+             cube[5][2][2] == Cube.BLUECOLOR;
+    }
+
+    public bool piece6(List<List<List<Color>>> cube){
+      return cube[2][2][2] == Cube.YELLOWCOLOR &&
+             cube[1][2][2] == Cube.REDCOLOR &&
+             cube[5][2][0] == Cube.BLUECOLOR;
+    }
+
+    public bool piece7(List<List<List<Color>>> cube){
+      return cube[2][0][2] == Cube.YELLOWCOLOR &&
+             cube[1][2][0] == Cube.REDCOLOR &&
+             cube[4][2][2] == Cube.GREENCOLOR;
+    }
+
+    public bool piece8(List<List<List<Color>>> cube){
+      return cube[2][0][0] == Cube.YELLOWCOLOR &&
+             cube[0][2][2] == Cube.ORANGECOLOR &&
+             cube[4][2][0] == Cube.GREENCOLOR;
+    }
+
+    public bool piece9(List<List<List<Color>>> cube){
+      return cube[3][1][0] == Cube.WHITECOLOR &&
+             cube[0][0][1] == Cube.ORANGECOLOR;
+    }
+
+    public bool piece10(List<List<List<Color>>> cube){
+      return cube[3][0][1] == Cube.WHITECOLOR &&
+             cube[5][0][1] == Cube.BLUECOLOR;
+    }
+
+    public bool piece11(List<List<List<Color>>> cube){
+      return cube[3][1][2] == Cube.WHITECOLOR &&
+             cube[1][0][1] == Cube.REDCOLOR;
+    }
+
+    public bool piece12(List<List<List<Color>>> cube){
+      return cube[3][2][1] == Cube.WHITECOLOR &&
+             cube[4][0][1] == Cube.GREENCOLOR;
+    }
+
+    public bool piece13(List<List<List<Color>>> cube){
+      return cube[0][1][0] == Cube.ORANGECOLOR &&
+             cube[5][1][2] == Cube.BLUECOLOR;
+    }
+
+    public bool piece14(List<List<List<Color>>> cube){
+      return cube[5][1][0] == Cube.BLUECOLOR &&
+             cube[1][1][2] == Cube.REDCOLOR;
+    }
+
+    public bool piece15(List<List<List<Color>>> cube){
+      return cube[1][1][0] == Cube.REDCOLOR &&
+             cube[4][1][2] == Cube.GREENCOLOR;
+    }
+
+    public bool piece16(List<List<List<Color>>> cube){
+      return cube[4][1][0] == Cube.GREENCOLOR &&
+             cube[0][1][2] == Cube.ORANGECOLOR;
+    }
+
+    public bool piece17(List<List<List<Color>>> cube){
+      return cube[2][1][0] == Cube.YELLOWCOLOR &&
+             cube[0][2][1] == Cube.ORANGECOLOR;
+    }
+
+    public bool piece18(List<List<List<Color>>> cube){
+      return cube[2][2][1] == Cube.YELLOWCOLOR &&
+             cube[5][2][1] == Cube.BLUECOLOR;
+    }
+
+    public bool piece19(List<List<List<Color>>> cube){
+      return cube[2][1][2] == Cube.YELLOWCOLOR &&
+             cube[1][2][1] == Cube.REDCOLOR;
+    }
+
+    public bool piece20(List<List<List<Color>>> cube){
+      return cube[2][0][1] == Cube.YELLOWCOLOR &&
+             cube[4][2][1] == Cube.GREENCOLOR;
+    }
+
+    public double ComputeHScore(Node pNode)
     {
+        bool admissable = true;
         RubiksCube tRubikCube = RC.cloneCube();
         tRubikCube.RunCustomSequence(pNode.sequenceMovements);
 
-        int totalPoints = 0;
+        double totalPoints = 0.0;
 
         List<List<List<Color>>> cubeColors = this.target.getAllFaces();
 
         List<Color> listColors = new List<Color>();
-        listColors.Add(Cube.ORANGECOLOR);
-        listColors.Add(Cube.REDCOLOR);
-        listColors.Add(Cube.YELLOWCOLOR);
-        listColors.Add(Cube.WHITECOLOR);
-        listColors.Add(Cube.GREENCOLOR);
-        listColors.Add(Cube.BLUECOLOR);
+        listColors.Add(Cube.ORANGECOLOR); // 0
+        listColors.Add(Cube.REDCOLOR);    // 1
+        listColors.Add(Cube.YELLOWCOLOR); // 2
+        listColors.Add(Cube.WHITECOLOR);  // 3
+        listColors.Add(Cube.GREENCOLOR);  // 4
+        listColors.Add(Cube.BLUECOLOR);   // 5
 
-        for (int indexColors = 0; indexColors < listColors.Count(); indexColors++)
+
+        if(piece1(cubeColors)) totalPoints++;
+        if(piece2(cubeColors)) totalPoints++;
+        if(piece3(cubeColors)) totalPoints++;
+        if(piece4(cubeColors)) totalPoints++;
+        if(piece5(cubeColors)) totalPoints++;
+        if(piece6(cubeColors)) totalPoints++;
+        if(piece7(cubeColors)) totalPoints++;
+        if(piece8(cubeColors)) totalPoints++;
+        if(piece9(cubeColors)) totalPoints++;
+        if(piece10(cubeColors)) totalPoints++;
+        if(piece11(cubeColors)) totalPoints++;
+        if(piece12(cubeColors)) totalPoints++;
+        if(piece13(cubeColors)) totalPoints++;
+        if(piece14(cubeColors)) totalPoints++;
+        if(piece15(cubeColors)) totalPoints++;
+        if(piece16(cubeColors)) totalPoints++;
+        if(piece17(cubeColors)) totalPoints++;
+        if(piece18(cubeColors)) totalPoints++;
+        if(piece19(cubeColors)) totalPoints++;
+        if(piece20(cubeColors)) totalPoints++;
+        /*for (int indexColors = 0; indexColors < listColors.Count(); indexColors++)
         {
             for(int i = 0; i < cubeColors[indexColors].Count(); i++)
             {
+
                 for(int j = 0; j < cubeColors[indexColors][i].Count(); j++)
                 {
+
                     if (cubeColors[indexColors][i][j] == listColors[indexColors])
                     {
                         totalPoints += 10;
                     }
                 }
+                Debug.Log("\n");
 
             }
-        }
+        }*/
 
-        //Debug.Log("total points: " + 2*totalPoints);
+        Debug.Log("total points: " + totalPoints);
 
-        return 2*totalPoints;
+        if(admissable) totalPoints /= 8.0;
+
+        return totalPoints;
     }
 
     public bool isSolved(Node pNode)
@@ -220,7 +355,6 @@ public class Solutionn
 
             // add the current cube to the closed list
             closedList.Add(current);
-
             // remove it from the open list
             openList.Remove(current);
 
@@ -262,7 +396,9 @@ public class Solutionn
                     // compute its score, set the parent
 
                     adjacentNode.G = adjacentNode.sequenceMovements.Replace("i", "").Count();
-                    adjacentNode.H = ComputeHScore(adjacentNode);
+
+                    adjacentNode.H = (int)ComputeHScore(adjacentNode);
+
                     //    adjacentNode.Y, target.X, target.Y);
                     adjacentNode.F = adjacentNode.G + adjacentNode.H;
                     //Debug.Log(adjacentNode.H);
@@ -294,8 +430,11 @@ public class Solutionn
         }
         */
 
-        Debug.Log("open list elements");
-
+        Debug.Log("open list elements "+openList.Count);
+        /*for (int i=0; i < openList.Count; i++) {
+          Debug.Log("\t"+openList[i].H);
+        }*/
+        Debug.Log("closed list elements "+closedList.Count);
 
         Debug.Log(closedList[1].sequenceMovements);
 

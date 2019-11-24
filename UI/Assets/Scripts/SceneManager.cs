@@ -89,10 +89,18 @@ public class SceneManager : MonoBehaviour {
 
             //hilo.Start();
 
-            string sol = s.A();
+            string sol = null;
+
+            var thread = new Thread(
+              () =>
+              {
+                sol = s.A();
+              }
+            );
+            thread.Start();
+            thread.Join();
             Debug.Log(sol);
             RCP.RC.RunCustomSequence(sol);
-            Debug.Log("test");
 
         }
     }
