@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System.Threading;
@@ -12,6 +12,7 @@ public class SceneManager : MonoBehaviour {
     public Text txtAnimationSpeed;
     public Toggle toggleRotateCamera;
     public bool rotateCamera = true;
+    public static string solutionString = "";
     Vector3 cameraResetPos = new Vector3(4, 4, -4);
 
     private IEnumerator coroutine;
@@ -81,25 +82,30 @@ public class SceneManager : MonoBehaviour {
             s.setVerbose(true);
 
 
-            //ThreadStart delegado = new ThreadStart(s.A);
+            /*ThreadStart delegado = new ThreadStart(s.A);
 
-            //Thread hilo = new Thread(delegado);
-            //hilo.Priority = System.Threading.ThreadPriority.Highest;
+            Thread hilo = new Thread(delegado);
+            hilo.Priority = System.Threading.ThreadPriority.Highest;
 
 
-            //hilo.Start();
-
+            hilo.Start();
+            */
             string sol = null;
 
-            var thread = new Thread(
-              () =>
-              {
+            //var thread = new Thread(
+            //  () =>
+            //  {
                 sol = s.A();
-              }
-            );
-            thread.Start();
-            thread.Join();
-            Debug.Log(sol);
+            //  }
+            //);
+            //thread.Priority = System.Threading.ThreadPriority.Highest;
+            //thread.Start();
+            //thread.Join();
+
+            //hilo.Join();
+
+            Debug.Log("Solución: " + sol);
+
             RCP.RC.RunCustomSequence(sol);
 
         }
@@ -129,7 +135,15 @@ public class SceneManager : MonoBehaviour {
 
     public void Solve()
     {
+      Solutionn s = new Solutionn(RCP_target, RCP.RC.cloneCube());
+      s.setVerbose(true);
 
+      string sol = null;
+      sol = s.A();
+
+      Debug.Log("Solución: " + sol);
+
+      RCP.RC.RunCustomSequence(sol);
     }
 
     public void setAnimationSpeed(float speed)

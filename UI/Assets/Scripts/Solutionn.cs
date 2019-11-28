@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -223,9 +223,11 @@ public class Solutionn
         RubiksCube tRubikCube = RC.cloneCube();
         tRubikCube.RunCustomSequence(pNode.sequenceMovements);
 
-        double totalPoints = 0.0;
+        double totalPoints = 20.0;
 
-        List<List<List<Color>>> cubeColors = this.target.getAllFaces();
+        //List<List<List<Color>>> cubeColors = this.target.getAllFaces();
+
+        List<List<List<Color>>> cubeColors = tRubikCube.getAllFaces();
 
         List<Color> listColors = new List<Color>();
         listColors.Add(Cube.ORANGECOLOR); // 0
@@ -236,26 +238,26 @@ public class Solutionn
         listColors.Add(Cube.BLUECOLOR);   // 5
 
 
-        if(piece1(cubeColors)) totalPoints++;
-        if(piece2(cubeColors)) totalPoints++;
-        if(piece3(cubeColors)) totalPoints++;
-        if(piece4(cubeColors)) totalPoints++;
-        if(piece5(cubeColors)) totalPoints++;
-        if(piece6(cubeColors)) totalPoints++;
-        if(piece7(cubeColors)) totalPoints++;
-        if(piece8(cubeColors)) totalPoints++;
-        if(piece9(cubeColors)) totalPoints++;
-        if(piece10(cubeColors)) totalPoints++;
-        if(piece11(cubeColors)) totalPoints++;
-        if(piece12(cubeColors)) totalPoints++;
-        if(piece13(cubeColors)) totalPoints++;
-        if(piece14(cubeColors)) totalPoints++;
-        if(piece15(cubeColors)) totalPoints++;
-        if(piece16(cubeColors)) totalPoints++;
-        if(piece17(cubeColors)) totalPoints++;
-        if(piece18(cubeColors)) totalPoints++;
-        if(piece19(cubeColors)) totalPoints++;
-        if(piece20(cubeColors)) totalPoints++;
+        if(piece1(cubeColors)) totalPoints--;
+        if(piece2(cubeColors)) totalPoints--;
+        if(piece3(cubeColors)) totalPoints--;
+        if(piece4(cubeColors)) totalPoints--;
+        if(piece5(cubeColors)) totalPoints--;
+        if(piece6(cubeColors)) totalPoints--;
+        if(piece7(cubeColors)) totalPoints--;
+        if(piece8(cubeColors)) totalPoints--;
+        if(piece9(cubeColors)) totalPoints--;
+        if(piece10(cubeColors)) totalPoints--;
+        if(piece11(cubeColors)) totalPoints--;
+        if(piece12(cubeColors)) totalPoints--;
+        if(piece13(cubeColors)) totalPoints--;
+        if(piece14(cubeColors)) totalPoints--;
+        if(piece15(cubeColors)) totalPoints--;
+        if(piece16(cubeColors)) totalPoints--;
+        if(piece17(cubeColors)) totalPoints--;
+        if(piece18(cubeColors)) totalPoints--;
+        if(piece19(cubeColors)) totalPoints--;
+        if(piece20(cubeColors)) totalPoints--;
         /*for (int indexColors = 0; indexColors < listColors.Count(); indexColors++)
         {
             for(int i = 0; i < cubeColors[indexColors].Count(); i++)
@@ -274,9 +276,7 @@ public class Solutionn
             }
         }*/
 
-        Debug.Log("total points: " + totalPoints);
-
-        if(admissable) totalPoints /= 8.0;
+        //if(admissable) totalPoints /= 8.0;
 
         return totalPoints;
     }
@@ -290,7 +290,7 @@ public class Solutionn
 
     public string A()
     {
-
+      Debug.Log("Start");
         Node current = null;
         var openList = new List<Node>();
         var closedList = new List<Node>();
@@ -341,7 +341,7 @@ public class Solutionn
         openList.Add(topI);
 
 
-        int limitAttemps = 1500;
+        int limitAttemps = 15000;
         int counter = 0;
 
         while (openList.Count > 0 && counter < limitAttemps )
@@ -401,6 +401,8 @@ public class Solutionn
 
                     //    adjacentNode.Y, target.X, target.Y);
                     adjacentNode.F = adjacentNode.G + adjacentNode.H;
+
+                    Debug.Log("N: " + current.sequenceMovements + " H: " + adjacentNode.H + " F: "+adjacentNode.F);
                     //Debug.Log(adjacentNode.H);
                     //Debug.Log(adjacentNode.F);
 
@@ -430,13 +432,16 @@ public class Solutionn
         }
         */
 
-        Debug.Log("open list elements "+openList.Count);
+        Debug.Log("open list elements: " + openList.Count);
         /*for (int i=0; i < openList.Count; i++) {
           Debug.Log("\t"+openList[i].H);
         }*/
-        Debug.Log("closed list elements "+closedList.Count);
+        Debug.Log("closed list elements: " + closedList.Count);
 
-        Debug.Log(closedList[1].sequenceMovements);
+        Debug.Log("solution: " + closedList[closedList.Count - 1].sequenceMovements);
+
+        //SceneManager.solutionString = closedList[closedList.Count - 1].sequenceMovements;
+
 
         return closedList[closedList.Count-1].sequenceMovements;
 
