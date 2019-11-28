@@ -107,7 +107,7 @@ public class SceneManager : MonoBehaviour {
           ////To know the total number of moves and update the UI label
           txtNumMoves.text = solCube.TurnRecordTokenCount() + " Moves";
 
-          Debug.Log("Solución: " + sol);
+
           Debug.Log("Cantidad Movimientos: " + solCube.TurnRecordTokenCount());
       }
     }

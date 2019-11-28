@@ -258,7 +258,7 @@ public class Solutionn
         if(piece18(cubeColors)) totalPoints--;
         if(piece19(cubeColors)) totalPoints--;
         if(piece20(cubeColors)) totalPoints--;
-        
+
         if(admissable) totalPoints /= 8.0;
 
         return totalPoints;
@@ -379,10 +379,19 @@ public class Solutionn
                     adjacentNode.F = adjacentNode.G + adjacentNode.H;
 
                     Debug.Log("Sequence: " + adjacentNode.sequenceMovements + "\tF: " + adjacentNode.F + " G: " + adjacentNode.G + " H: " + adjacentNode.H);
-                    //Debug.Log(adjacentNode.H);
-                    //Debug.Log(adjacentNode.F);
 
                     adjacentNode.Parent = current;
+
+                    if(adjacentNode.H == 0){
+                      Debug.Log("Solution found...");
+                      Debug.Log("open list elements: " + openList.Count);
+                      Debug.Log("closed list elements: " + closedList.Count);
+
+                      Debug.Log("solution: " + adjacentNode.sequenceMovements);
+
+                      return adjacentNode.sequenceMovements;
+
+                    }
 
                     // and add it to the open list
                     openList.Add(adjacentNode);
@@ -409,9 +418,6 @@ public class Solutionn
         */
 
         Debug.Log("open list elements: " + openList.Count);
-        /*for (int i=0; i < openList.Count; i++) {
-          Debug.Log("\t"+openList[i].H);
-        }*/
         Debug.Log("closed list elements: " + closedList.Count);
 
         Debug.Log("solution: " + closedList[closedList.Count - 1].sequenceMovements);
