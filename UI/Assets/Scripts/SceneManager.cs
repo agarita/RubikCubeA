@@ -5,21 +5,22 @@ using System.Threading;
 
 public class SceneManager : MonoBehaviour {
     public RubiksCubePrefab RCP;
+    public RubiksCubePrefab RCP_BASE;
     public RubiksCube RCP_target;
+    public Solutionn s;
+
     public Text txtTurnRecord;
     public Text txtNumMoves;
     public Slider SpeedSlider;
     public Text txtAnimationSpeed;
     public Toggle toggleRotateCamera;
     public bool rotateCamera = true;
-    public static string solutionString = "";
     Vector3 cameraResetPos = new Vector3(4, 4, -4);
 
     private IEnumerator coroutine;
 
     void Start()
     {
-        RCP_target = RCP.RC.cloneCube();
         txtTurnRecord = txtTurnRecord.GetComponent<Text>();
         SpeedSlider = SpeedSlider.GetComponent<Slider>();
         txtAnimationSpeed = txtAnimationSpeed.GetComponent<Text>();
@@ -45,69 +46,17 @@ public class SceneManager : MonoBehaviour {
             RCP.resetCubePrefabPositions();
             RCP.RefreshPanels();
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+
+        else if (Input.GetKeyDown(KeyCode.S))
         {
-            ScrambleCube();
+            Solve();
         }
-        else if (Input.GetKeyDown(KeyCode.P))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
-            //if(RCP.RC.isSolved())
-            //{
-            //    Debug.Log("isSolved");
-            //}
-
-            ////RCP.RC.printAllFaces();
-            //ScrambleCube();
-
-            //if (RCP.RC.isSolved())
-            //{
-            //    Debug.Log("isSolved");
-            //}
-
-            //Debug.Log("------------------");
-            //RCP.RC.printAllFaces();
-
-            //string solution = "LUDFBBiFi";
-            //RubiksCube solCube = new RubiksCube();
-            //solCube.RunCustomSequence(solution);
-            //coroutine = RCP.animateCustomSequence(solution);
-            //StartCoroutine(coroutine);
-
-            ////To set the UI label with the solution.
-            //txtTurnRecord.text = solution;
-
-            ////To know the total number of moves and update the UI label
-            //txtNumMoves.text = solCube.TurnRecordTokenCount() + " Moves";
-            Solutionn s = new Solutionn(RCP_target, RCP.RC.cloneCube());
-            s.setVerbose(true);
-
-
-            /*ThreadStart delegado = new ThreadStart(s.A);
-
-            Thread hilo = new Thread(delegado);
-            hilo.Priority = System.Threading.ThreadPriority.Highest;
-
-
-            hilo.Start();
-            */
-            string sol = null;
-
-            //var thread = new Thread(
-            //  () =>
-            //  {
-                sol = s.A();
-            //  }
-            //);
-            //thread.Priority = System.Threading.ThreadPriority.Highest;
-            //thread.Start();
-            //thread.Join();
-
-            //hilo.Join();
-
-            Debug.Log("Solución: " + sol);
-
-            RCP.RC.RunCustomSequence(sol);
-
+            EasyScrambleCube();
+        }
+        else if (Input.GetKeyDown(KeyCode.D)){
+            ScrambleCube();
         }
     }
 
@@ -127,7 +76,7 @@ public class SceneManager : MonoBehaviour {
         if (coroutine != null)
             StopCoroutine(coroutine);
 
-        RCP.RC.Scramble(50);
+        RCP.RC.Scramble(5);
         RCP.RefreshPanels();
         txtTurnRecord.text = "";
         txtNumMoves.text = "";
@@ -135,15 +84,32 @@ public class SceneManager : MonoBehaviour {
 
     public void Solve()
     {
-      Solutionn s = new Solutionn(RCP_target, RCP.RC.cloneCube());
-      s.setVerbose(true);
+      if(RCP.RC.isSolved())
+      {
+          Debug.Log("isSolved");
+      }
+      else
+      {
+          RubiksCube RC_target = new RubiksCube();
+          RubiksCube RC_original = RCP.RC.cloneCube();
+          s = new Solutionn(RC_target, RC_original, true);
 
-      string sol = null;
-      sol = s.A();
+          string sol = null;
+          sol = s.A();
 
-      Debug.Log("Solución: " + sol);
+          RubiksCube solCube = new RubiksCube();
+          solCube.RunCustomSequence(sol);
+          coroutine = RCP.animateCustomSequence(sol);
+          StartCoroutine(coroutine);
 
-      RCP.RC.RunCustomSequence(sol);
+          ////To set the UI label with the solution.
+          txtTurnRecord.text = sol;
+          ////To know the total number of moves and update the UI label
+          txtNumMoves.text = solCube.TurnRecordTokenCount() + " Moves";
+
+          Debug.Log("Solución: " + sol);
+          Debug.Log("Cantidad Movimientos: " + solCube.TurnRecordTokenCount());
+      }
     }
 
     public void setAnimationSpeed(float speed)

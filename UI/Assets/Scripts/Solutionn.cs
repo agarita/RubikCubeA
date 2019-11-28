@@ -53,11 +53,11 @@ public class Solutionn
         this.verbose = pValue;
     }
 
-    public Solutionn(RubiksCube pTarget, RubiksCube pRC)
+    public Solutionn(RubiksCube pTarget, RubiksCube pRC, bool pValue)
     {
         this.target = pTarget;
-
         this.RC = pRC;
+        this.verbose = pValue;
     }
 
     public List<Node> getWalkableNodes(Node pNode)
@@ -66,7 +66,7 @@ public class Solutionn
         Node right = pNode.DeepClone();
         right.addNewMovement("R");
         Node rightI = pNode.DeepClone();
-        right.addNewMovement("Ri");
+        rightI.addNewMovement("Ri");
 
         Node left = pNode.DeepClone();
         left.addNewMovement("L");
@@ -258,25 +258,8 @@ public class Solutionn
         if(piece18(cubeColors)) totalPoints--;
         if(piece19(cubeColors)) totalPoints--;
         if(piece20(cubeColors)) totalPoints--;
-        /*for (int indexColors = 0; indexColors < listColors.Count(); indexColors++)
-        {
-            for(int i = 0; i < cubeColors[indexColors].Count(); i++)
-            {
-
-                for(int j = 0; j < cubeColors[indexColors][i].Count(); j++)
-                {
-
-                    if (cubeColors[indexColors][i][j] == listColors[indexColors])
-                    {
-                        totalPoints += 10;
-                    }
-                }
-                Debug.Log("\n");
-
-            }
-        }*/
-
-        //if(admissable) totalPoints /= 8.0;
+        
+        if(admissable) totalPoints /= 8.0;
 
         return totalPoints;
     }
@@ -351,8 +334,6 @@ public class Solutionn
             var lowest = openList.Min(l => l.F);
             current = openList.First(l => l.F == lowest);
 
-
-
             // add the current cube to the closed list
             closedList.Add(current);
             // remove it from the open list
@@ -360,16 +341,11 @@ public class Solutionn
 
             // if we added the destination to the closed list, we've found a path
 
-            if (verbose) {
-                //Debug.Log("new Current: ");
-                //Debug.Log(current.sequenceMovements);
-            }
-
-
-
             if (closedList.FirstOrDefault(l => isSolved(l)) != null)
             {
-                if (verbose) { Debug.Log("Solution found"); }
+                if (verbose) {
+                  Debug.Log("Solution found");
+                }
 
                 break;
             }
@@ -402,7 +378,7 @@ public class Solutionn
                     //    adjacentNode.Y, target.X, target.Y);
                     adjacentNode.F = adjacentNode.G + adjacentNode.H;
 
-                    Debug.Log("N: " + current.sequenceMovements + " H: " + adjacentNode.H + " F: "+adjacentNode.F);
+                    Debug.Log("Sequence: " + adjacentNode.sequenceMovements + "\tF: " + adjacentNode.F + " G: " + adjacentNode.G + " H: " + adjacentNode.H);
                     //Debug.Log(adjacentNode.H);
                     //Debug.Log(adjacentNode.F);
 

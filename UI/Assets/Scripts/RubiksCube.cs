@@ -13,19 +13,6 @@ public class RubiksCube
     public RubiksCube()
     {
         sequences = new List<string>();
-        //sequences.Add("RiUFiUi");//fix middle in stage 2
-        //sequences.Add("RiDiRD");//fix corner in stage 3
-        //sequences.Add("URUiRiUiFiUF");
-        //sequences.Add("UiLiULUFUiFi");
-        //sequences.Add("FURUiRiFi");
-        //sequences.Add("FRURiUiFi");
-        //sequences.Add("RURiURUURi");
-        //sequences.Add("RiFRiBBRFiRiBBRRUi");
-        //sequences.Add("FFULRiFFLiRUFF");
-        //sequences.Add("FFUiLRiFFLiRUiFF");
-
-        //sequences.Add("LLRRFFBBUUDD");//checkerboard
-        //sequences.Add("UDiRLiFBiUDi");//six spots
 
         cubeMatrix = new List<List<List<Cube>>>();
 
@@ -45,7 +32,7 @@ public class RubiksCube
             }
             cubeMatrix.Add(CubeRow);
         }
-        //transform.rotation = Quaternion.Euler(new Vector3(45,0,45));
+        
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
@@ -322,25 +309,6 @@ public class RubiksCube
             if (!clockwise)
                 turnRecord += "i";
         }
-
-    }
-
-    void rotateMiddleXYFace(bool clockwise)//clockwise is relative to front face in this case
-    {
-        int iterations = 1;
-        if (!clockwise) iterations = 3;
-        for (int j = 0; j < iterations; j++)
-        {
-            List<Cube> oldFrontOutline = getOutline(getCubeXYFace(1, false));
-            List<Cube> currentFrontOutline = getOutline(getCubeXYFace(1, true));
-
-            for (int i = 0; i < 8; i++)
-            {
-                currentFrontOutline[(i + 2) % 8].setSideColors(oldFrontOutline[i].getColors());
-                currentFrontOutline[(i + 2) % 8].rotateZ();
-
-            }
-        }
     }
 
     public void rotateBackFace(bool clockwise, bool record = true)
@@ -393,6 +361,101 @@ public class RubiksCube
         }
     }
 
+    public void rotateLeftFace(bool clockwise, bool record = true)
+    {
+      int iterations = 1;
+      if (!clockwise) iterations = 3;
+      for (int j = 0; j < iterations; j++)
+      {
+        List<Cube> oldFrontOutline = getOutline(getCubeYZFace(0, false));
+        List<Cube> currentFrontOutline = getOutline(getCubeYZFace(0, true));
+
+        for (int i = 0; i < 8; i++)
+        {
+          currentFrontOutline[(i + 2) % 8].setSideColors(oldFrontOutline[i].getColors());
+          currentFrontOutline[(i + 2) % 8].rotateX();
+          currentFrontOutline[(i + 2) % 8].rotateX();
+          currentFrontOutline[(i + 2) % 8].rotateX();
+
+        }
+      }
+
+      if (record)
+      {
+        turnRecord += "L";
+        if (!clockwise)
+        turnRecord += "i";
+      }
+    }
+
+    public void rotateTopFace(bool clockwise, bool record = true)
+    {
+      int iterations = 1;
+      if (!clockwise) iterations = 3;
+      for (int j = 0; j < iterations; j++)
+      {
+        List<Cube> oldFrontOutline = getOutline(getCubeXZFace(2, false));
+        List<Cube> currentFrontOutline = getOutline(getCubeXZFace(2, true));
+
+        for (int i = 0; i < 8; i++)
+        {
+          currentFrontOutline[(i + 2) % 8].setSideColors(oldFrontOutline[i].getColors());
+          currentFrontOutline[(i + 2) % 8].rotateY();
+          currentFrontOutline[(i + 2) % 8].rotateY();
+          currentFrontOutline[(i + 2) % 8].rotateY();
+        }
+      }
+
+      if (record)
+      {
+        turnRecord += "U";
+        if (!clockwise)
+        turnRecord += "i";
+      }
+    }
+
+    public void rotateBottomFace(bool clockwise, bool record = true)
+    {
+      int iterations = 1;
+      if (!clockwise) iterations = 3;
+      for (int j = 0; j < iterations; j++)
+      {
+        List<Cube> oldFrontOutline = getOutline(getCubeXZFace(0, false));
+        List<Cube> currentFrontOutline = getOutline(getCubeXZFace(0, true));
+
+        for (int i = 0; i < 8; i++)
+        {
+          currentFrontOutline[i].setSideColors(oldFrontOutline[(i + 2) % 8].getColors());
+          currentFrontOutline[i].rotateY();
+        }
+      }
+
+      if (record)
+      {
+        turnRecord += "D";
+        if (!clockwise)
+        turnRecord += "i";
+      }
+    }
+
+    void rotateMiddleXYFace(bool clockwise)//clockwise is relative to front face in this case
+    {
+      int iterations = 1;
+      if (!clockwise) iterations = 3;
+      for (int j = 0; j < iterations; j++)
+      {
+        List<Cube> oldFrontOutline = getOutline(getCubeXYFace(1, false));
+        List<Cube> currentFrontOutline = getOutline(getCubeXYFace(1, true));
+
+        for (int i = 0; i < 8; i++)
+        {
+          currentFrontOutline[(i + 2) % 8].setSideColors(oldFrontOutline[i].getColors());
+          currentFrontOutline[(i + 2) % 8].rotateZ();
+
+        }
+      }
+    }
+
     void rotateMiddleYZFace(bool clockwise)//clockwise is relative to left face
     {
         int iterations = 1;
@@ -413,59 +476,6 @@ public class RubiksCube
         }
     }
 
-    public void rotateLeftFace(bool clockwise, bool record = true)
-    {
-        int iterations = 1;
-        if (!clockwise) iterations = 3;
-        for (int j = 0; j < iterations; j++)
-        {
-            List<Cube> oldFrontOutline = getOutline(getCubeYZFace(0, false));
-            List<Cube> currentFrontOutline = getOutline(getCubeYZFace(0, true));
-
-            for (int i = 0; i < 8; i++)
-            {
-                currentFrontOutline[(i + 2) % 8].setSideColors(oldFrontOutline[i].getColors());
-                currentFrontOutline[(i + 2) % 8].rotateX();
-                currentFrontOutline[(i + 2) % 8].rotateX();
-                currentFrontOutline[(i + 2) % 8].rotateX();
-
-            }
-        }
-
-        if (record)
-        {
-            turnRecord += "L";
-            if (!clockwise)
-                turnRecord += "i";
-        }
-    }
-
-    public void rotateTopFace(bool clockwise, bool record = true)
-    {
-        int iterations = 1;
-        if (!clockwise) iterations = 3;
-        for (int j = 0; j < iterations; j++)
-        {
-            List<Cube> oldFrontOutline = getOutline(getCubeXZFace(2, false));
-            List<Cube> currentFrontOutline = getOutline(getCubeXZFace(2, true));
-
-            for (int i = 0; i < 8; i++)
-            {
-                currentFrontOutline[(i + 2) % 8].setSideColors(oldFrontOutline[i].getColors());
-                currentFrontOutline[(i + 2) % 8].rotateY();
-                currentFrontOutline[(i + 2) % 8].rotateY();
-                currentFrontOutline[(i + 2) % 8].rotateY();
-            }
-        }
-
-        if (record)
-        {
-            turnRecord += "U";
-            if (!clockwise)
-                turnRecord += "i";
-        }
-    }
-
     void rotateMiddleXZFace(bool clockwise)//clockwise is relative to bottom face
     {
         int iterations = 1;
@@ -480,30 +490,6 @@ public class RubiksCube
                 currentFrontOutline[i].setSideColors(oldFrontOutline[(i + 2) % 8].getColors());
                 currentFrontOutline[i].rotateY();
             }
-        }
-    }
-
-    public void rotateBottomFace(bool clockwise, bool record = true)
-    {
-        int iterations = 1;
-        if (!clockwise) iterations = 3;
-        for (int j = 0; j < iterations; j++)
-        {
-            List<Cube> oldFrontOutline = getOutline(getCubeXZFace(0, false));
-            List<Cube> currentFrontOutline = getOutline(getCubeXZFace(0, true));
-
-            for (int i = 0; i < 8; i++)
-            {
-                currentFrontOutline[i].setSideColors(oldFrontOutline[(i + 2) % 8].getColors());
-                currentFrontOutline[i].rotateY();
-            }
-        }
-
-        if (record)
-        {
-            turnRecord += "D";
-            if (!clockwise)
-                turnRecord += "i";
         }
     }
 
@@ -605,20 +591,20 @@ public class RubiksCube
 
     public bool isSolved()
     {
-        List<List<Cube>> Side;
         Color c;
-        bool valid = true;
+        List<List<Cube>> Side;
 
         for (int z = 0; z < 4; z++)//check perimeter
         {
             Side = getCubeXYFace(0, true);
             c = Side[1][1].getColor(Cube.sides.FRONT);
+
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
                     if (Side[i][j].getColor(Cube.sides.FRONT) != c)
-                        valid = false;
+                        return false;
                 }
             }
 
@@ -633,13 +619,13 @@ public class RubiksCube
             for (int j = 0; j < 3; j++)
             {
                 if (Side[i][j].getColor(Cube.sides.TOP) != c)
-                    valid = false;
+                    return false;
             }
         }
 
         //if 5 of the 6 sides are correct, the last side must be correct
 
-        return valid;
+        return true;
     }
 
     public int RunSequence(int s)
